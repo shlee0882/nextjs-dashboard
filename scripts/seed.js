@@ -6,6 +6,7 @@ const {
   users,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 async function seedUsers(client) {
   try {
