@@ -1,7 +1,17 @@
-## Next.js App Router Course - Starter
+## Next.js 스터디 
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+### 가이드
+- https://nextjs.org/learn
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+<br/>
 
-# self-
+### 사용기술 및 구현 기능
+
+- Vercel Auth, Storage, Deploy, Log, Environment Variables
+- CRUD, 라우팅, 페이징, 에러, 메타데이터 처리
+
+<br/>
+
+### 배포
+- https://nextjs-dashboard-nine-snowy-39.vercel.app/
+- user@nextmail.com / 123456
