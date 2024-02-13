@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
  
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export const authConfig = {
   pages: {
