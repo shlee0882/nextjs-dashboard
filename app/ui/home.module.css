@@ -4,4 +4,22 @@
     border-bottom: 30px solid black;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-  }
+}
+
+.main {
+  /* background-image: url('path/to/image.jpg'); */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-attachment: fixed; /* 스크롤 시 배경 고정 */
+}
+
+.background-image {
+  width: 100vw; /* 뷰포트 너비에 맞춤 */
+  height: 100vh; /* 뷰포트 높이에 맞춤 */
+  object-fit: contain; /* 비율 유지 */
+  position: fixed; /* 필요에 따라 배경처럼 고정 */
+  top: 0;
+  left: 0;
+  z-index: -1; /* 내용물 뒤로 */
+}

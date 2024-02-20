@@ -67,3 +67,33 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+
+export const formatPhoneNumber = (input: string) => {
+  // 숫자만 추출
+  let numbers = input.replace(/[^\d]/g, '');
+  let formatted = '';
+
+  if(input.length >= 3) {
+    formatted = input.slice(0,3)+'-';
+  }
+  
+  // 숫자가 3자리 이하인 경우, '010-' 형식을 유지
+  if (numbers.length <= 2) {
+    return numbers;
+  } else if(numbers.length == 3) {
+    formatted = numbers+'-';
+    numbers = numbers.substring(3);
+  } else {
+    numbers = numbers.substring(3);
+  }
+
+  // 숫자를 3-4-4 형식으로 분할
+  if (numbers.length > 0) {
+    formatted += numbers.substring(0, 4);
+    if (numbers.length > 4) {
+      formatted += '-' + numbers.substring(4, 8);
+    }
+  }
+
+  return formatted;
+};
