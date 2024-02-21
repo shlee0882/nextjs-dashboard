@@ -1,12 +1,13 @@
 const { db } = require('@vercel/postgres');
 const {
   invoices,
+  store_mst,
   customers,
   revenue,
   users,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 async function seedUsers(client) {
   try {
@@ -15,7 +16,7 @@ async function seedUsers(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        login_id VARCHAR(255) NOT NULL,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL
       );
@@ -28,8 +29,8 @@ async function seedUsers(client) {
       users.map(async (user) => {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
+        INSERT INTO users (login_id, email, password)
+        VALUES (${user.login_id}, ${user.email}, ${hashedPassword})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),
@@ -87,41 +88,40 @@ async function seedInvoices(client) {
   }
 }
 
-async function seedCustomers(client) {
+async function seedStoreMst(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "customers" table if it doesn't exist
+    // Create the "store_mst" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS customers (
+      CREATE TABLE IF NOT EXISTS store_mst (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        image_url VARCHAR(255) NOT NULL
+        store_name VARCHAR(255) NOT NULL,
+        branch_name VARCHAR(255) NOT NULL
       );
     `;
 
-    console.log(`Created "customers" table`);
+    console.log(`Created "store_mst" table`);
 
-    // Insert data into the "customers" table
-    const insertedCustomers = await Promise.all(
-      customers.map(
-        (customer) => client.sql`
-        INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
+    // Insert data into the "store_mst" table
+    const insertedStoreMst = await Promise.all(
+      store_mst.map(
+        (mst) => client.sql`
+        INSERT INTO store_mst (id, store_name, branch_name)
+        VALUES (${mst.id}, ${mst.store_name}, ${mst.branch_name})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedCustomers.length} customers`);
+    console.log(`Seeded ${insertedStoreMst.length} customers`);
 
     return {
       createTable,
-      customers: insertedCustomers,
+      insertedStoreMst: insertedStoreMst,
     };
   } catch (error) {
-    console.error('Error seeding customers:', error);
+    console.error('Error seeding insertedStoreMst:', error);
     throw error;
   }
 }
@@ -164,10 +164,10 @@ async function seedRevenue(client) {
 async function main() {
   const client = await db.connect();
 
-  await seedUsers(client);
-  await seedCustomers(client);
-  await seedInvoices(client);
-  await seedRevenue(client);
+  // await seedUsers(client);
+  await seedStoreMst(client);
+  // await seedInvoices(client);
+  // await seedRevenue(client);
 
   await client.end();
 }
