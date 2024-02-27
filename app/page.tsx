@@ -13,15 +13,16 @@ import NumberInput from './ui/main/number-input';
 import { formatPhoneNumber } from './lib/utils';
 import ReserveButton from './ui/main/reserve-button';
 import image from 'next/image';
+import ReservationList from './ui/main/reservations-list';
 
 export default function Page() {
-  const imageNumber = Math.floor(Math.random() * 8) + 1; 
+  const imageNumber = Math.floor(Math.random() * 8) + 1;
   const [input, setInput] = useState('010-');
   const [customImgUrl, setCustomImgUrl] = useState(`/background/${imageNumber}.jpg`);
 
   useEffect(() => {
     const changeBackgroundImage = () => {
-      const imageNumber = Math.floor(Math.random() * 8) + 1; 
+      const imageNumber = Math.floor(Math.random() * 8) + 1;
       setCustomImgUrl(`/background/${imageNumber}.jpg`);
     };
     // 1분마다 배경 이미지 변경
@@ -82,7 +83,17 @@ export default function Page() {
           <div className="flex flex-col items-center justify-center h-screen">
             <div className="bg-white p-5 rounded-xl shadow-2xl">
               <NumberInput value={input} />
-              <NumberPad onButtonClick={handleButtonClick} />
+              {/* <NumberPad onButtonClick={handleButtonClick} /> */}
+              {/* <div className='w-full flex justify-between'> */}
+              <div className="flex flex-col md:flex-row">
+                <div className="number-pad w-full md:w-1/2 lg:w-2/3">
+                  <NumberPad onButtonClick={handleButtonClick} />
+                </div>
+                
+                <div className="reservation-list md:w-2/3 lg:w-3/4 xl:w-3/4 mx-auto w-full">
+                  <ReservationList />
+                </div>
+              </div>
               <ReserveButton value={input} />
             </div>
           </div>
